@@ -1,18 +1,18 @@
 
-{ assert, assertType, isType, Kind } = require "type-utils"
-
 ReactNativeEventEmitter = require "ReactNativeEventEmitter"
 ReactNativeTagHandles = require "ReactNativeTagHandles"
 ReactComponent = require "ReactComponent"
+assertType = require "assertType"
 combine = require "combine"
+isType = require "isType"
+assert = require "assert"
+Kind = require "Kind"
 
 { registrationNames } = ReactNativeEventEmitter
 
-ReactComponent_Kind = Kind ReactComponent
-
 module.exports = (componentOrTag, registrationName, nativeEvent) ->
 
-  assertType componentOrTag, [ ReactComponent_Kind, Number ]
+  assertType componentOrTag, [ Number, Kind(ReactComponent) ]
   assertType registrationName, String
   assertType nativeEvent, Object
 
@@ -20,7 +20,7 @@ module.exports = (componentOrTag, registrationName, nativeEvent) ->
 
   topLevelType = registrationName.replace /^on/, "top"
 
-  if isType componentOrTag, ReactComponent_Kind
+  if componentOrTag instanceof ReactComponent
     component = componentOrTag
     rootNodeID = component._reactInternalInstance._rootNodeID
     tag = ReactNativeTagHandles.rootNodeIDToTag[rootNodeID]

@@ -1,6 +1,4 @@
-var Kind, ReactComponent, ReactComponent_Kind, ReactNativeEventEmitter, ReactNativeTagHandles, assert, assertType, combine, isType, ref, registrationNames;
-
-ref = require("type-utils"), assert = ref.assert, assertType = ref.assertType, isType = ref.isType, Kind = ref.Kind;
+var Kind, ReactComponent, ReactNativeEventEmitter, ReactNativeTagHandles, assert, assertType, combine, isType, registrationNames;
 
 ReactNativeEventEmitter = require("ReactNativeEventEmitter");
 
@@ -8,15 +6,21 @@ ReactNativeTagHandles = require("ReactNativeTagHandles");
 
 ReactComponent = require("ReactComponent");
 
+assertType = require("assertType");
+
 combine = require("combine");
+
+isType = require("isType");
+
+assert = require("assert");
+
+Kind = require("Kind");
 
 registrationNames = ReactNativeEventEmitter.registrationNames;
 
-ReactComponent_Kind = Kind(ReactComponent);
-
 module.exports = function(componentOrTag, registrationName, nativeEvent) {
   var component, rootNodeID, tag, topLevelType;
-  assertType(componentOrTag, [ReactComponent_Kind, Number]);
+  assertType(componentOrTag, [Number, Kind(ReactComponent)]);
   assertType(registrationName, String);
   assertType(nativeEvent, Object);
   assert(registrationNames[registrationName] != null, {
@@ -25,7 +29,7 @@ module.exports = function(componentOrTag, registrationName, nativeEvent) {
     registrationNames: registrationNames
   });
   topLevelType = registrationName.replace(/^on/, "top");
-  if (isType(componentOrTag, ReactComponent_Kind)) {
+  if (componentOrTag instanceof ReactComponent) {
     component = componentOrTag;
     rootNodeID = component._reactInternalInstance._rootNodeID;
     tag = ReactNativeTagHandles.rootNodeIDToTag[rootNodeID];
