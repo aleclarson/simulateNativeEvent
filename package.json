@@ -1,0 +1,16 @@
+{
+  "name": "simulateNativeEvent",
+  "version": "1.0.0",
+  "main": "./js/src/simulateNativeEvent",
+  "dependencies": {
+    "combine": "aleclarson/combine#1.0.0",
+    "type-utils": "aleclarson/type-utils#1.0.0"
+  },
+  "lotus": {
+    "implicitDependencies": [
+      "ReactComponent",
+      "ReactNativeEventEmitter",
+      "ReactNativeTagHandles"
+    ]
+  }
+}
