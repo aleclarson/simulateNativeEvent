@@ -1,35 +1,28 @@
 
+ReactNativeComponentTree = require "ReactNativeComponentTree"
 ReactNativeEventEmitter = require "ReactNativeEventEmitter"
-ReactNativeTagHandles = require "ReactNativeTagHandles"
 ReactComponent = require "ReactComponent"
 assertType = require "assertType"
 combine = require "combine"
 isType = require "isType"
-assert = require "assert"
 Kind = require "Kind"
 
-{ registrationNames } = ReactNativeEventEmitter
+simulateNativeEvent = (reactTag, registrationName, nativeEvent) ->
 
-module.exports = (componentOrTag, registrationName, nativeEvent) ->
-
-  assertType componentOrTag, [ Number, Kind(ReactComponent) ]
+  assertType reactTag, Number.or Kind ReactComponent
   assertType registrationName, String
   assertType nativeEvent, Object
 
-  assert registrationNames[registrationName]?, { reason: "Invalid event name!", registrationName, registrationNames }
+  if not ReactNativeEventEmitter.registrationNames[registrationName]?
+    throw Error "Invalid event name: #{registrationName}"
 
   topLevelType = registrationName.replace /^on/, "top"
 
-  if componentOrTag instanceof ReactComponent
-    component = componentOrTag
-    rootNodeID = component._reactInternalInstance._rootNodeID
-    tag = ReactNativeTagHandles.rootNodeIDToTag[rootNodeID]
+  if not isType reactTag, Number
+    reactTag = ReactNativeComponentTree.getTagFromInstance reactTag
 
-  else if isType componentOrTag, Number
-    tag = componentOrTag
-    rootNodeID = ReactNativeTagHandles.tagToRootNodeID[tag]
-    assert rootNodeID?, { reason: "Invalid tag!", tag }
+  nativeEvent = combine {}, nativeEvent, {target: reactTag}
+  ReactNativeEventEmitter.receiveEvent reactTag, topLevelType, nativeEvent
+  return
 
-  nativeEvent = combine {}, nativeEvent, { target: tag }
-
-  ReactNativeEventEmitter.handleTopLevel topLevelType, rootNodeID, rootNodeID, nativeEvent, tag
+module.exports = simulateNativeEvent

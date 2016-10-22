@@ -3,6 +3,8 @@
 
 Simulate a native event in [React Native](http://github.com/facebook/react-native).
 
+Tested with **react-native 0.35.0**
+
 ```coffee
 simulateNativeEvent = require "simulateNativeEvent"
 
