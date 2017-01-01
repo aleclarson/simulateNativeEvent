@@ -1,5 +1,5 @@
 
-# simulateNativeEvent v1.1.0 [![stable](http://badges.github.io/stability-badges/dist/stable.svg)](http://github.com/badges/stability-badges)
+# simulateNativeEvent v1.1.1 [![stable](http://badges.github.io/stability-badges/dist/stable.svg)](http://github.com/badges/stability-badges)
 
 Simulate a native event in [React Native](http://github.com/facebook/react-native).
 
